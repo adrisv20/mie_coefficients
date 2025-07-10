@@ -4,6 +4,7 @@
 #La helicidad se cambia manualmente buscando sigma en el buscador. Recordar cambiarlo también en los títulos de las gráficas.
 
 import numpy as np
+from matplotlib.colors import LinearSegmentedColormap
 from scipy.special import spherical_jn as besselj, spherical_yn as bessely
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -398,17 +399,17 @@ def Force(lambda_, a, r, kappa, n_core):
 #Gráficas
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 # Parámetros fijos
-lambda_val = 1064e-9  # en nm
+lambda_val = 1064e-9  # en m
 a = 150e-9
 r = 160e-9
 
-# Rango de valores para kappa
+# Rango de valores para x y n
 x_vals = np.linspace(0.5, 1.5, 150)  # valores de x
 n_core_vals = np.linspace(2.0, 4.0, 150)  # índices de refracción del núcleo
 
 # Crear malla 2D
 X, N = np.meshgrid(x_vals, n_core_vals)
-kappa = 0
+kappa = 0  #(sin quiralidad)
 
 Z_sca = np.zeros_like(X)
 Z_ext = np.zeros_like(X)
@@ -422,24 +423,25 @@ for i in range(N.shape[0]):
 z_min = min(Z_sca.min(), Z_ext.min())
 z_max = max(Z_sca.max(), Z_ext.max())
 
+
 # Crear subplots
 fig, axs = plt.subplots(1, 2, figsize=(14, 6))
 
 # Qsca colormap
 im1 = axs[0].imshow(Z_sca, origin='lower',
                     extent=[x_vals.min(), x_vals.max(), n_core_vals.min(), n_core_vals.max()],
-                    aspect='auto', cmap='viridis', vmin=z_min, vmax=z_max)
+                    aspect='auto', cmap="viridis", vmin=z_min, vmax=z_max)
 axs[0].set_xlabel('x')
 axs[0].set_ylabel('$n_{core}$')
-axs[0].set_title('Qsca vs x y $n_{core}$ con $\sigma=-1$')
+axs[0].set_title('$Q_s$ vs x y $n_{core}$ con $\sigma=-1$')
 
 # Qext colormap
 im2 = axs[1].imshow(Z_ext, origin='lower',
                     extent=[x_vals.min(), x_vals.max(), n_core_vals.min(), n_core_vals.max()],
-                    aspect='auto', cmap='viridis', vmin=z_min, vmax=z_max)
+                    aspect='auto', cmap="viridis", vmin=z_min, vmax=z_max)
 axs[1].set_xlabel('x')
 axs[1].set_ylabel('$n_{core}$')
-axs[1].set_title('Qext vs x y $n_{core}$ con $\sigma=-1$')
+axs[1].set_title('$Q_{ext}$ vs x y $n_{core}$ con $\sigma=-1$')
 
 # Barra de color vertical común a la derecha
 cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.7])  # [left, bottom, width, height]
@@ -448,4 +450,3 @@ fig.colorbar(im2, cax=cbar_ax, orientation='vertical', label='Eficiencia (Q)')
 # Ajustar layout para dejar espacio a la derecha
 plt.tight_layout(rect=[0, 0, 0.9, 1])
 plt.show()
-
