@@ -410,22 +410,23 @@ def Force(lambda_, a, r, kappa, mc):
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 #Gráficas
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
-# Parámetros fijos
-lambda_val = np.linspace(300, 1000, 81) * nm # 81 puntos en nm
+# Rango de valores de lambda
+lambda_val = np.linspace(300, 1000, 81) * nm 
+#parámetros fijos
 a = 200e-9
 r = 280e-9
 mc = 0 * 1e10
 
-# Rango de valores para kappa
+# Valor constante para kappa
 kappa_values = 1  
 
 
-# Evaluar Qsca para cada valor de kappa
+# Evaluar Qsca para cada valor de lambda
 table = [(lamb, Qsca(lamb , a , r , kappa_values, mc)) for lamb in lambda_val]
 table1 = [(lamb, Qext(lamb, a, r, kappa_values, mc)) for lamb in lambda_val]
 # Suponemos que 'table' ya contiene los datos [(kappa, Qsca), ...]
 
-# Separar los valores de kappa y Qsca
+# Separar los valores de lambda, Qsca y Qext
 lamb_vals, qsca_vals = zip(*table)
 lamb_vals1, qext_vals = zip(*table1)
 lamb_nm = np.linspace(300, 1000, 81)
@@ -439,7 +440,7 @@ axs[0].set_xlabel("$\\lambda[nm]$")
 axs[0].set_ylabel("$Q_{s}$")
 axs[0].grid(True)
 
-# Gráfico 2: Otra variable vs kappa
+# Gráfico 2: Qext vs kappa
 axs[1].plot(lamb_nm, qext_vals, marker='s', color='c', linestyle='--', linewidth=1)
 axs[1].set_xlabel("$\\lambda[nm]$")
 axs[1].set_ylabel("$Q_{ext}$")
