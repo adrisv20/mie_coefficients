@@ -420,12 +420,12 @@ mc = 0 * 1e10
 kappa_values = np.linspace(-1, 1, 81)  # 81 puntos incluyendo -1 y 1
 
 
-# Evaluar Qsca para cada valor de kappa
+# Evaluar Qsca y Qext para cada valor de kappa
 table = [(kappa, Qsca(lambda_val , a , r , kappa, mc)) for kappa in kappa_values]
 table1 = [(kappa, Qext(lambda_val , a , r , kappa, mc)) for kappa in kappa_values]
 # Suponemos que 'table' ya contiene los datos [(kappa, Qsca), ...]
 
-# Separar los valores de kappa y Qsca
+# Separar los valores de kappa, Qsca y Qext.
 kappa_vals, qsca_vals = zip(*table)
 kappa_vals1, qext_vals = zip(*table1)
 
@@ -439,7 +439,7 @@ axs[0].set_ylabel("$Q_{s}$")
 axs[0].set_ylim([-0.20, 3.5])
 axs[0].grid(True)
 
-# Gráfico 2: Otra variable vs kappa
+# Gráfico 2: Qext vs kappa
 axs[1].plot(kappa_vals, qext_vals, marker='s', color='c', linestyle='--', linewidth=1)
 axs[1].set_xlabel("$\\kappa$")
 axs[1].set_ylabel("$Q_{ext}$")
