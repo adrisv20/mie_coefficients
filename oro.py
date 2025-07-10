@@ -7,6 +7,7 @@
 import numpy as np
 from scipy.special import spherical_jn as besselj, spherical_yn as bessely
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import interp1d
 
@@ -24,7 +25,7 @@ tau_10 = tau_32 = 100 * fs
 tau_21 = 50 * ps
 Gamma_pump = 1e11
 lambda_a = 777 * nm
-# Línea NUEVA (después de imports)
+# Definición del índice de refracción complejo
 def n_complex(lambda_nm):  # lambda_nm en nanómetros
     return f1(lambda_nm) + 1j * f2(lambda_nm)
 n = np.array([1.49, 1.53, 1.53, 1.54, 1.48, 1.48, 1.5, 1.48, 1.46, 1.47, 1.46, 1.45, 1.38, 1.31, 1.04, 0.62, 0.43, 0.29, 0.21, 0.14, 0.13, 0.14, 0.16, 0.17, 0.22, 0.27])
@@ -411,7 +412,7 @@ def Force(lambda_, a, r, kappa, n_core):
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 #Gráficas
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
-# Parámetros fijos
+
 lambda_vals_nm = np.linspace(300, 1000, 150)  # en nm
 a = 150e-9
 r_vals_m = np.linspace(50e-9, 150e-9, 150)    # en metros
@@ -421,7 +422,7 @@ r_vals_m = np.linspace(50e-9, 150e-9, 150)    # en metros
 
 # Crear malla 2D
 Lambda, R = np.meshgrid(lambda_vals_nm, r_vals_m)
-kappa = 0
+kappa = 0 #(sin quiralidad)
 
 Z_sca = np.zeros_like(Lambda)
 Z_ext = np.zeros_like(Lambda)
@@ -446,7 +447,7 @@ fig, axs = plt.subplots(1, 2, figsize=(14, 6))
 # Qsca
 im1 = axs[0].imshow(Z_sca, origin='lower', aspect='auto',
                     extent=[lambda_vals_nm.min(), lambda_vals_nm.max(), R_nm.min(), R_nm.max()],
-                    cmap='viridis', vmin=z_min, vmax=z_max)
+                    cmap="viridis", vmin=z_min, vmax=z_max)
 axs[0].set_xlabel('Longitud de onda (nm)')
 axs[0].set_ylabel('Radio de la esfera (nm)')
 axs[0].set_title('Qsca vs r y $\lambda$ con $\sigma=1$')
@@ -454,7 +455,7 @@ axs[0].set_title('Qsca vs r y $\lambda$ con $\sigma=1$')
 # Qext
 im2 = axs[1].imshow(Z_ext, origin='lower', aspect='auto',
                     extent=[lambda_vals_nm.min(), lambda_vals_nm.max(), R_nm.min(), R_nm.max()],
-                    cmap='viridis', vmin=z_min, vmax=z_max)
+                    cmap="viridis", vmin=z_min, vmax=z_max)
 axs[1].set_xlabel('Longitud de onda (nm)')
 axs[1].set_ylabel('Radio de la esfera (nm)')
 axs[1].set_title('Qext vs r y $\lambda$ con $\sigma=1$')
